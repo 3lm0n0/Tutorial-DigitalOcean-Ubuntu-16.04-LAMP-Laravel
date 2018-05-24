@@ -1,0 +1,48 @@
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+OBJECTIVE: DEPLOY A LARAVEL 5.6 APP in server
+/////////////////////////////////////////////
+
+So first we have to choose the stack, in this case, we are going to use:
+LAMP = (1)Linux + (2)Apache + (4)MySql + (3)PHP
+
+
+
+
+
+
+
+
+
+
+
+
+
+LET'S START
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+The version of Ubuntu that we are going to select from DigitalOcean is:
+(1) Ubuntu 16.04 (Linux)
+/////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+

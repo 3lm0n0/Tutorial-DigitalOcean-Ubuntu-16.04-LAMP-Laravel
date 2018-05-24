@@ -1,0 +1,88 @@
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+(2) Let's Install Apache
+-------------------------------------------------------------------------
+Some considerations:
+
+"sudo" is a shell command — it's a program whose name you can type in the shell. 
+Its arguments are a command to run as root, the system user with maximum privileges. 
+
+"apt-get" is a shell command, part of the APT tool suite. APT is the package manager on 
+Debian, Ubuntu, Mint and other Linux distributions. "apt-get" installs and maintains programs 
+and other collections of files (data, documentation, etc.) in the form of packages. 
+Packages are usually downloaded from repositories on the Internet, but can also be read from a CD or other media. 
+
+-------------------------------------------------------------------------
+Installing Apache and Updating the Firewall
+
+Install Apache using Ubuntu's package manager, "apt":
+	$ apt-get update && apt-get upgrade
+
+	$ sudo apt install apache2
+
+Since this is a "sudo" command, these operations are executed with root privileges. 
+It will ask you for your regular user's password to verify your intentions.
+
+Once you've entered your password, "apt" will tell you which packages it plans to install 
+and how much extra disk space they'll take up. Press "Y" and hit "ENTER" to continue, 
+and the installation will proceed.
+-------------------------------------------------------------------------
+Adjust the Firewall to Allow Web Traffic
+make sure that your firewall allows HTTP and HTTPS traffic. 
+You can check that UFW has an application profile for Apache like so:
+	$ sudo ufw app list
+
+Output:
+	Available applications:
+  		Apache
+  		Apache Full
+  		Apache Secure
+  		OpenSSH
+-------------------------------------------------------------------------
+If you look at the Apache Full profile, it should show that it enables traffic to ports 80 and 443:
+	$ sudo ufw app info "Apache Full"
+
+Output:
+	Profile: Apache Full
+	Title: Web Server (HTTP,HTTPS)
+	Description: Apache v2 is the next generation of the omnipresent Apache web
+	server.
+
+	Ports:
+  		80,443/tcp
+-------------------------------------------------------------------------
+Allow incoming HTTP and HTTPS traffic for this profile:
+	$ sudo ufw allow in "Apache Full"
+-------------------------------------------------------------------------
+
+
+	$ sudo nano /etc/apache2/apache2.conf
+
+You will find:
+<Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+</Directory>
+
+Change by:
+<Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+</Directory>
+
+When you are finished, save and close the file by pressing "CTRL"+"X". 
+Confirm the save by typing "Y" and then hit "ENTER" to verify the file save location.
+-------------------------------------------------------------------------
+After this, restart the Apache web server in order for your changes to be recognized. Do this by typing this:
+
+    $ sudo systemctl restart apache2
+-------------------------------------------------------------------------
+You can do a spot check right away to verify that everything went as planned by visiting 
+your server's public IP address in your web browser:
+http://your_server_ip
+
+You will see the default Ubuntu Apache web page, which is there for informational and testing purposes.
+
+/////////////////////////////////////////////////////////////////////////

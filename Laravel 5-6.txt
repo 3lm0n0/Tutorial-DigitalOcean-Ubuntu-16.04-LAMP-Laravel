@@ -1,0 +1,81 @@
+
+Install LARAVEL 5.6
+
+
+
+-------------------------------------------------------------------------
+At the root directory:
+	$ sudo apt-get install composer
+-------------------------------------------------------------------------
+	$ composer global require "laravel/installer"
+-------------------------------------------------------------------------
+
+To put this folder on the PATH environment variable type
+
+echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' > ~/.bashrc
+
+
+In order to check if it worked, logout and login again or execute
+
+source ~/.bashrc
+
+on the shell.
+
+Check if its added correctly:
+
+echo $PATH
+
+-------------------------------------------------------------------------
+Let's check laravel version:
+	$ laravel -v
+-------------------------------------------------------------------------
+
+	$ cd /var/www/
+-------------------------------------------------------------------------
+create new app or clone for repository
+	$ laravel new appName or git clone
+-------------------------------------------------------------------------
+get into app directory
+	$ composer install
+-------------------------------------------------------------------------
+
+
+	$ cp .env.example .env
+	$ nano .env
+-------------------------------------------------------------------------
+Laravel generate app key
+	$ php artisan key:generate
+-------------------------------------------------------------------------
+	$ nano /etc/apache2/sites-available/000-default.conf
+DocumentRoot /var/www/projectName/public
+-------------------------------------------------------------------------
+	$ nano /etc/apache2/sites-available/default-ssl.conf
+DocumentRoot /var/www/projectName/public
+-------------------------------------------------------------------------
+chmod -R 775 storage
+	Means
+	7 - Owner can write
+	7 - Group can write
+	5 - Others cannot write!
+
+
+	$ chmod -R 775 storage
+	$ chmod -R 775 bootstrap/
+Make storage/framework writable
+	$ chmod -R 777 storage/framework
+Make storage/logs writable
+	$ chmod -R 777 storage/logs
+Make bootstrap/cache writable
+	$ chmod -R 777 bootstrap/cache
+-------------------------------------------------------------------------
+
+	$ php artisan storage:link
+	$ php artisan make:auth
+	$ php artisan migrate
+
+-------------------------------------------------------------------------
+
+	$ sudo a2enmod rewrite
+
+	$ sudo systemctl restart apache2
+

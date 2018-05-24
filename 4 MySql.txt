@@ -1,0 +1,137 @@
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+(4) Let's Install MySql & PHPmyAdmin
+
+MySQL is a database management system. Basically, it will organize and provide 
+access to databases where your site can store information.
+
+phpMyAdmin was created so that users can interact with MySQL through a web interface.
+
+
+-------------------------------------------------------------------------
+4.1) MySQL
+
+Again, use "apt" to acquire and install this software:
+	$ sudo apt install mysql-server
+
+You will again be shown a list of the packages that will be installed, along 
+with the amount of disk space they'll take up. Enter "Y" to continue.
+-------------------------------------------------------------------------
+When the installation is complete, run a simple security script that comes pre-installed 
+with MySQL which will remove some dangerous defaults and lock down access to your database 
+system. Start the interactive script by running:
+	$ sudo mysql_secure_installation
+
+
+You will be asked if you want to configure the VALIDATE PASSWORD PLUGIN.
+
+Note: Enabling this feature is something of a judgment call. If enabled, passwords which 
+don't match the specified criteria will be rejected by MySQL with an error. This will cause 
+issues if you use a weak password in conjunction with software which automatically configures 
+MySQL user credentials, such as the Ubuntu packages for phpMyAdmin. It is safe to leave 
+validation disabled, but you should always use strong, unique passwords for database credentials.
+
+Answer "Y" for yes, or anything else to continue without enabling.
+
+VALIDATE PASSWORD PLUGIN can be used to test passwords
+and improve security. It checks the strength of password
+and allows the users to set only those passwords which are
+secure enough. Would you like to setup VALIDATE PASSWORD plugin?
+
+Press "y"|"Y" for Yes, any "other key" for No:
+
+If you answer “yes”, you'll be asked to select a level of password validation. 
+Keep in mind that if you enter 2 for the strongest level, you will receive errors 
+when attempting to set any password which does not contain numbers, upper and lowercase 
+letters, and special characters, or which is based on common dictionary words.
+
+There are three levels of password validation policy:
+
+LOW    Length >= 8
+MEDIUM Length >= 8, numeric, mixed case, and special characters
+STRONG Length >= 8, numeric, mixed case, special characters and dictionary                  file
+
+Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 1
+
+Regardless of whether you chose to set up the VALIDATE PASSWORD PLUGIN, your server 
+will next ask you to select and confirm a password for the MySQL root user. 
+This is an administrative account in MySQL that has increased privileges. 
+Think of it as being similar to the root account for the server itself (although the 
+one you are configuring now is a MySQL-specific account). Make sure this is a strong, 
+unique password, and do not leave it blank.
+
+If you enabled password validation, you'll be shown the password strength for the root 
+password you just entered and your server will ask if you want to change that password. 
+If you are happy with your current password, enter "N" for "no" at the prompt:
+
+Using existing password for root.
+
+Estimated strength of the password: 100
+Change the password for root ? ((Press y|Y for Yes, any other key for No) : n
+
+For the rest of the questions, press "Y" and hit the "ENTER" key at each prompt. 
+This will remove some anonymous users and the test database, disable remote root logins, 
+and load these new rules so that MySQL immediately respects the changes you have made.
+-------------------------------------------------------------------------
+Check the status of the mysql service using systemctl:
+
+    $ sudo systemctl status mysql 
+
+Press "q" to exit.
+-------------------------------------------------------------------------
+4.2) PHPMyAdmin
+ 
+	$ sudo apt-get install phpmyadmin php-mbstring php-gettext
+
+This will ask you a few questions in order to configure your installation correctly.
+
+Warning: When the first prompt appears, apache2 is highlighted, but not selected. 
+If you do not hit "Space" to select Apache, the installer will not move the necessary files during installation. 
+Hit "Space", "Tab", and then "Enter" to select Apache.
+
+    For the server selection, choose "apache2".
+    Select "yes" when asked whether to use dbconfig-common to set up the database
+    You will be prompted for your database administrator's password
+    You will then be asked to choose and confirm a password for the phpMyAdmin application itself
+
+The installation process actually adds the phpMyAdmin Apache configuration file into the 
+/etc/apache2/conf-enabled/ directory, where it is automatically read.
+-------------------------------------------------------------------------
+	$ sudo nano /etc/apache2/apache2.conf
+
+Add the following line at the end:
+Include /etc/phpmyadmin/apache.conf
+
+-------------------------------------------------------------------------
+Pointing to php7.1-mcrypt with php7.2 will solve the issue here. Below are the steps to configure 7.1 version mcrypt with php7.2
+
+Install php7.1-mcrypt
+
+	$ sudo apt install php7.1-mcrypt
+
+
+Create symbolic link to php7.1-mcrypt
+
+	$ sudo ln -s /etc/php/7.1/mods-available/mcrypt.ini /etc/php/7.2/mods-available/
+
+
+Enable mcrypt extension
+
+	$ sudo phpenmod mcrypt
+
+-------------------------------------------------------------------------
+
+	$ sudo a2dismod php7.0
+	
+	$ sudo a2enmod php7.2
+
+-------------------------------------------------------------------------
+Afterwards, you'll need to restart Apache for your changes to be recognized:
+	$ sudo systemctl restart apache2
+-------------------------------------------------------------------------
+
+You can now access the web interface by visiting your server's domain name or 
+public IP address followed by /phpmyadmin:
+https://domain_name_or_IP/phpmyadmin
+
+/////////////////////////////////////////////////////////////////////////
